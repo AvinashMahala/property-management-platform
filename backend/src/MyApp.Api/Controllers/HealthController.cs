@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MyApp.Interfaces;
 
 namespace MyApp.Api.Controllers
 {
@@ -22,7 +23,7 @@ namespace MyApp.Api.Controllers
             // log the check
             _logger.LogInformation("Health check requested");
             var status = _healthService.GetStatus();
-            var version = System.Reflection.Assembly.GetEntryAssembly()? .GetName().Version?.ToString() ?? "unknown";
+            var version = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "unknown";
             return Ok(new { status, version });
         }
     }

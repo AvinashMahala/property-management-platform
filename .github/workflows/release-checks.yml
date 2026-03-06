@@ -1,0 +1,51 @@
+name: Release PR Build Checks
+
+on:
+  pull_request:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    name: Build and Test for Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore backend
+        run: dotnet restore backend/MyApp.sln
+
+      - name: Restore dotnet tools
+        run: dotnet tool restore
+
+      - name: Check code format
+        run: dotnet format --verify-no-changes --workspace backend/MyApp.sln
+
+      - name: Install security tools
+        run: |
+          dotnet tool install --global dotnet-outdated-tool --version 3.* || echo "already installed"
+          dotnet tool install --global security-code-scan || echo "already installed"
+          export PATH="$PATH:$HOME/.dotnet/tools"
+
+      - name: Run outdated package check
+        run: |
+          dotnet outdated --fail-on-any --pre-release
+
+      - name: Run security code scan
+        run: |
+          security-code-scan -s backend -r html -o security-report.html || true
+
+      - name: Build backend
+        run: dotnet build backend/MyApp.sln --configuration Release --no-restore /p:TreatWarningsAsErrors=true
+
+      - name: Run tests
+        run: dotnet test backend/MyApp.sln --no-build --verbosity normal
+
+      # TODO: add additional release-specific validations (version bump, changelog, etc.)

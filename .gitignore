@@ -55,9 +55,6 @@ publish/
 # Secret configs
 appsettings.*.json
 
-# GitHub Actions
-.github/workflows/*
-
 # Docker
 docker-compose.override.yml
 

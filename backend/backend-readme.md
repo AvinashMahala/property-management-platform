@@ -36,6 +36,8 @@ dotnet restore
 dotnet build
 ```
 
+> **Formatting check:** a `Directory.Build.targets` file runs `dotnet format` before every build. Make sure the `dotnet-format` tool is installed globally (`dotnet tool install -g dotnet-format`) so local builds fail when code needs formatting.
+
 The shared `Directory.Build.props` ensures all projects target `net10.0` with nullable reference types and implicit usings enabled.
 
 ## ▶ Running the API

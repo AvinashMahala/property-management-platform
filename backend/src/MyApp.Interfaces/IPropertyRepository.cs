@@ -4,4 +4,4 @@ namespace MyApp.Interfaces
     {
         // define data access methods here
     }
-} 
+}

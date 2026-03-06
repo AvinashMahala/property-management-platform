@@ -6,4 +6,4 @@ namespace MyApp.Services
     {
         public string GetStatus() => "OK";
     }
-} 
+}

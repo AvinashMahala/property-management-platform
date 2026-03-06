@@ -30,7 +30,7 @@ jobs:
 
       - name: Install security tools
         run: |
-          dotnet tool install --global dotnet-outdated-tool --version 3.* || echo "already installed"
+          dotnet tool install --global dotnet-outdated-tool --version 4.* || echo "already installed"
           dotnet tool install --global security-code-scan || echo "already installed"
           export PATH="$PATH:$HOME/.dotnet/tools"
 

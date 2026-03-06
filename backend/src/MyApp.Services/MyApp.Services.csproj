@@ -5,5 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyApp.Interfaces\MyApp.Interfaces.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -1,0 +1,7 @@
+<Project>
+  <!-- Run dotnet format as part of every local build. It will fail the build if formatting is required. -->
+  <Target Name="EnforceCodeFormatting" BeforeTargets="Build">
+    <!-- always operate on the root solution regardless of which project is building -->
+    <Exec Command="dotnet format &quot;$(MSBuildThisFileDirectory)MyApp.sln&quot; --verify-no-changes" ContinueOnError="false" />
+  </Target>
+</Project>

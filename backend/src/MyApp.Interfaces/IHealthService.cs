@@ -4,4 +4,4 @@ namespace MyApp.Interfaces
     {
         string GetStatus();
     }
-} 
+}

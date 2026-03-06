@@ -6,4 +6,4 @@ namespace MyApp.Repositories
     {
         // TODO: implement data access methods
     }
-} 
+}

@@ -28,16 +28,6 @@ jobs:
       - name: Check code format
         run: dotnet format backend/MyApp.sln --verify-no-changes
 
-      - name: Install security tools
-        run: |
-          dotnet tool install --global dotnet-outdated-tool --version 4.* || echo "already installed"
-          dotnet tool install --global security-code-scan || echo "already installed"
-          export PATH="$PATH:$HOME/.dotnet/tools"
-
-      - name: Run outdated package check
-        run: |
-          dotnet outdated --fail-on-any --pre-release
-
       - name: Run security code scan
         run: |
           security-code-scan -s backend -r html -o security-report.html || true

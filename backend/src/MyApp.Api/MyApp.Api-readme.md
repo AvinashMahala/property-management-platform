@@ -57,6 +57,15 @@ When running, the app will redirect `/` to `/swagger` where the Swagger UI is av
 
 ## 🛠 Key code_snippets
 
+### Dependency Injection setup
+
+The project includes a `DependencyInjection.cs` extension where application services and repositories are registered. `Program.cs` calls `builder.Services.AddApplicationServices()` early in startup. Add new registrations there rather than modifying `Program.cs` directly.
+
+### Swagger configuration
+
+The root redirect endpoint (`/`) is intentionally excluded from the generated OpenAPI spec so that the UI only shows real controller operations. This is implemented with a small predicate in the `AddSwaggerGen` configuration.
+
+
 ### Program.cs (simplified)
 
 ```csharp
@@ -66,9 +75,36 @@ using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// add swagger explorer/generator
+// enable versioning (default v1.0)
+builder.Services.AddApiVersioning(options =>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    options.ReportApiVersions = true;
+});
+
+// swagger explorer & generator with versioned documents
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "MyApp API",
+        Version = "v1"
+    });
+    c.DocInclusionPredicate((docName, apiDesc) =>
+    {
+        if (!apiDesc.TryGetMethodInfo(out var methodInfo))
+            return false;
+
+        var versions = methodInfo.DeclaringType?
+            .GetCustomAttributes(true)
+            .OfType<Microsoft.AspNetCore.Mvc.ApiVersionAttribute>()
+            .SelectMany(attr => attr.Versions);
+
+        return versions?.Any(v => $"v{v.ToString()}" == docName) ?? false;
+    });
+});
 
 var app = builder.Build();
 
@@ -93,11 +129,12 @@ Feel free to extend this file with configuration for:
 
 ## 📦 Dependencies
 
-Only `Swashbuckle.AspNetCore` is referenced explicitly. All other packages come transitively via the `.NET SDK`.
+Package references within this project do not specify a version. Versions are managed centrally via `backend/Directory.Packages.props` (see the backend README). Only `Swashbuckle.AspNetCore` and `Microsoft.AspNetCore.Mvc.Versioning` are currently consumed directly; additional packages added here will inherit versions from the central file.
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.6" />
+  <PackageReference Include="Swashbuckle.AspNetCore" />
+  <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" />
 </ItemGroup>
 ```
 

@@ -1,0 +1,68 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# Rider
+.idea/
+*.sln.iml
+
+# NuGet
+*.nupkg
+packages/
+.nuget/
+
+# Visual Studio Code
+.vscode/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# npm / frontend
+node_modules/
+pnpm-lock.yaml
+yarn.lock
+npm-debug.log
+
+# Logs
+*.log
+
+# User-specific files
+*.env
+
+# SQL Server files
+*.mdf
+*.ldf
+
+# JetBrains Rider
+.idea/
+
+# Publish output
+publish/
+
+# Secret configs
+appsettings.*.json
+
+# GitHub Actions
+.github/workflows/*
+
+# Docker
+docker-compose.override.yml
+
+# Other
+*.sqlite
+_UpgradeReport_Files/
+
+# End of file

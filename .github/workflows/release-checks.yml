@@ -26,7 +26,7 @@ jobs:
         run: dotnet tool restore
 
       - name: Check code format
-        run: dotnet format --verify-no-changes --workspace backend/MyApp.sln
+        run: dotnet format backend/MyApp.sln --verify-no-changes
 
       - name: Install security tools
         run: |
